@@ -29,9 +29,11 @@ async function signup(e) {
             password: e.target.password.value
         }
         const response = await axios.post('http://localhost:3000/user/signup', signupDetails)
-        if(response.status === 201) {
-            alert('signup is successfully')
-            throw new ErrorEvent('Failed to login')
+      
+         if(response.data[1] == false ){
+            alert(response.data.message)
+        }else{
+            alert("Sign Up Successful!")
         }
 
     } catch(err) {

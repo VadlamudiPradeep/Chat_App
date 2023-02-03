@@ -16,12 +16,17 @@ const signup = async (req, res)=>{
     if(isStringValid(name) || isStringValid(email) ||isStringValid(phone)   || isStringValid(password)){
         return res.status(400).json({err: "Bad parameters . Something is missing"})
     }
+   
     const saltrounds = 10;
     bcrypt.hash(password, saltrounds, async (err, hash) => {
         console.log(err)
-        await User.create({ name, email , phone, password:hash })
-        res.status(201).json({message: 'Successfully create new user'})
+      await User.create({ name, email , phone, password:hash })
+    
+        res.status(201).json({message: 'Successfully create new user'});
+
+      
     })
+    
     }catch(err) {
             res.status(500).json(err);
         }
