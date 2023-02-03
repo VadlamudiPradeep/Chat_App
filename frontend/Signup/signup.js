@@ -1,74 +1,86 @@
 
 
-let signupUrl = 'http://localhost:3000/user'
+async function signup(e) {
+    try{
+        e.preventDefault();
+        console.log(e.target.email.value);
+        // let name=document.getElementById('name').value
+        // let email=document.getElementById('email').value
+        // let phone=document.getElementById('phone').value
+        // let pass=document.getElementById('password').value
+       
+        // if( name.length< 3 || name==""){
+        //     alert('Enter a valid Name!')
+        //     return
+        // }else if(email.indexOf('@')==-1 ){
+        //     alert('Enter a valid Email ID!')
+        //     return
+        // }else if(isNaN(phone) || phone.length < 10){
+        //     alert("Enter a valid Phone No!")
+        //     return;
+        // }else if(pass.length < 5){
+        //     alert('Enter a strong password')
+        // }
+        // console.log(signupDetails)
+        const signupDetails = {
+            name: e.target.name.value,
+            email: e.target.email.value,
+            phone:e.target.phone.value,
+            password: e.target.password.value
+        }
+        const response = await axios.post('http://localhost:3000/user/signup', signupDetails)
+        if(response.status === 201) {
+            alert('signup is successfully')
+            throw new ErrorEvent('Failed to login')
+        }
 
-let signupBtn = document.getElementById('sign-up-btn');
-
-
-signupBtn.addEventListener('clcik',()=>{
-    container.classList.add('right-panel-active')
-})
-
-
-
-
-
-
-signupBtn.addEventListener('click' , signUp);
-
-
-
-function signUp(e){
-    e.preventDefault();
-
-    let name= document.getElementById('name').value;
-    let email = document.getElementById('email');
-    let phoneNumber = document.getElementById('phone');
-    let password = document.getElementById('password');
-if(name.length === '' && email.length ==='' && phoneNumber.length === '' && password.length ===''){
-    alert('Please enter the valid details');
-    return ;
-}
-
-else if(name.length <3 || name==''){
-        alert('Enter a valid name');
-        return;
-    }else if(email.indexOf('@')== -1){
-        alert('Enter a valid Email Id');
-        return ;
-    }else if(phoneNumber.length <10 || isNaN(phoneNumber)){
-        alert('Enter a Valid Number');
-        return;
+    } catch(err) {
+        document.body.innerHTML += `<div style="color:red">${err} </div>`
     }
-    else{
-        document.getElementById('name').value ='';
-        document.getElementById('email').value ='';
-        document.getElementById('phoneNumber').value ='';
-        document.getElementById('password').value ='';
+};
 
-        axios({
-            methos: 'post',
-            url : signupUrl,
-         userdetails:{
-            name:name,
-            email:email,
-            phone:phoneNumber,
-            password:password,
-         }
-        })
-        .then(response =>{
-         if(response.userdetails[1] == false){
-            alert('This email have using the account with us ! please login');
-         }else{
-            alert('Sign Up is Successful!');
-         }
-        }).catch(err =>{
-            ShowError();
-        });
-            
-        
-    };
-}
-function ShowError(err){
-    document.body.innerHTML += `<h1 style="color:red">${err}</h1>`
+
+
+async function login(e){
+    try{
+     e.preventDefault();
+
+
+    //  let email = document.getElementById('email');
+    //  let password = document.getElementById('password');
+
+
+    //  if(email.indexOf('@')== -1 ){
+    //     alert('Enter a valid Email ID !!');
+    //     return ;
+    //  }else if(password.length < 5){
+    //     alert('Enter a valid password');
+    //     return ;
+    //  }else{
+    //     document.getElementById('email').value ='';
+    //     document.getElementById('password').value = '';
+       
+    //     };
+
+        let loginDetails ={
+            name : e.target.email.value ,
+            password :e.target.password.value
+         };
+
+     let response = await axios.get(`http://localhost:3000/user/login` ,loginDetails )
+     if(response.status === 200 ){
+        alert('login is successfully');
+     }else{
+        throw new ErrorEvent()
+     }
+
+    }catch(err){
+        showError();
+    }
+
+
+};
+
+function showError(err){
+    document.body.innerHTML += `<div style="color:red"> ${err}</div>`
 }
